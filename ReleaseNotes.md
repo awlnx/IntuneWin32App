@@ -1,5 +1,21 @@
 # Release notes for IntuneWin32App module
 
+## 1.3.6
+- Add-IntuneWin32App function now has a new parameter switch named UseAzCopy. When this switch is used, AzCopy.exe is used to transfer the files to the storage account instead of the native method.
+- New-IntuneWin32AppRequirementRule has been updated to construct the proper objects. The minimumFreeDiskSpaceInMB, MinimumMemoryInMB, MinimumNumberOfProcessors and minimumCpuSpeedInMHz objets when not specified as parameters now adds a 'null' string instead of $null (not being part of the object returned).
+- Private function Invoke-IntuneGraphRequest has been updated with UTF-8 encoding content type support. From this version and on, when the script file is properly encoded with UTF-8 with BOM, special characters should now work as expected.
+
+## 1.3.5
+- Connect-MSIntuneGraph function has been updated to store the TenantID parameter in a global variable named $Global:AccessTokenTenantID.
+- Private function Invoke-AzureStorageBlobUpload used in Add-IntuneWin32App function now refreshes an access token 10 minutes before it's about to expire. This should prevent uploads of large applications from failing due to the access token has expired.
+
+## 1.3.4
+- Private function New-IntuneWin32AppBody used in Add-IntuneWin32App function, was updated where the minimumSupportedOperatingSystem property is replaced by minimumSupportedWindowsRelease. This caused the Add-IntuneWin32App function to return Bad Request since the request body was malformed. `NOTE:` This change introduces a new parameter for New-IntuneWin32AppRequirementRule function named MinimumSupportedWindowsRelease that replaces the MinimumSupportedOperatingSystem parameter.
+- Also fixed a bug in private function New-IntuneWin32AppBody where minimumFreeDiskSpaceInMB, minimumMemoryInMB, minimumNumberOfProcessors and minimumCpuSpeedInMHz properties where not handled at all. 
+- Add-IntuneWin32App function was updated where a break command that would prevent the Win32 app body JSON output from being display in case an error occured, was removed.
+- New-IntuneWin32AppRequirementRuleScript and New-IntuneWin32AppDetectionRuleScript functions was fixed as reported on: https://github.com/MSEndpointMgr/IntuneWin32App/issues/41
+- New-IntuneWin32AppRequirementRuleScript has been updated with correct variables for 'Version'.
+
 ## 1.3.3
 - Added ClientSecret parameter in the Connect-MSIntuneGraph function to support the client secret auth flow
 
